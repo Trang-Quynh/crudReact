@@ -15,6 +15,9 @@ export function Home(props){
     const [users, setUsers] = useState([]);
     let [id, setId] = useState('');
     let [name, setName] = useState('');
+
+    let [updateId, setUpdateId] = useState('')
+    let [updateName, setUpdateName] = useState('')
     let [idEdit, setIdEdit] = useState(-1)
 
 
@@ -54,8 +57,8 @@ export function Home(props){
     const showForm = (item) =>{
        return (
             <>
-                <input value={item.id} onChange={(e) => setId(e.target.value)} type="text" />
-                <input value={item.name} onChange={(e) => setName(e.target.value)} type="text" />
+                <input value={updateId} onChange={(e) => setUpdateId(e.target.value)} type="text" />
+                <input value={updateName} onChange={(e) => setUpdateName(e.target.value)} type="text" />
                 <button onClick={(e) => updateFunction(item.id)}>Submit</button>
             </>
 
@@ -68,8 +71,8 @@ export function Home(props){
     const updateFunction = (id) =>{
         let newUsers = [...users]
         let user = {
-            id: id,
-            name: name
+            id: updateId,
+            name: updateName
         }
         let index = -1;
         for (let i = 0; i < newUsers.length; i++) {
@@ -79,7 +82,7 @@ export function Home(props){
         }
             newUsers[index] = user;
             setUsers(newUsers);
-            setIdEdit(!idEdit)
+            setIdEdit(-1)
     }
     return(
         <>
@@ -93,8 +96,12 @@ export function Home(props){
                     <div key={item.id} >
                             <p>{item.id}. {item.name}</p>
                             <button onClick={(e) =>{ deleteFunction(item.id)}}>Delete</button>
-                            <button onClick={(e) =>{setIdEdit(item.id)}}>Update</button>
-                            { (idEdit == item.id) ? showForm(item) : <></> }
+                            <button onClick={(e) =>{
+                                setIdEdit(item.id);
+                                setUpdateId(item.id)
+                                setUpdateName(item.name);
+                            }}>Update</button>
+                            { (idEdit === item.id) ? showForm(item) : <></> }
                     </div>
                 ))
             }
